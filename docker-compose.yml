@@ -9,12 +9,14 @@ services:
       - MYSQL_PASSWORD=mailtrain
     volumes:
       - mailtrain-mysq-data:/var/lib/mysql
+    restart: always
   redis:
     image: redis:3.0
     volumes:
       - mailtrain-redis-data:/data
+    restart: always
   mailtrain:
-    image: mailtrain:latest
+    build: ./
     depends_on:
       - mysql
       - redis
@@ -23,6 +25,9 @@ services:
       - mailtrain-node-data:/app/public/grapejs/uploads
       - mailtrain-node-data:/app/public/mosaico/uploads
       - mailtrain-node-reports:/app/protected/reports
+    ports:
+      - "3000:3000"
+    restart: always
 volumes:
   mailtrain-mysq-data: {}
   mailtrain-redis-data: {}
